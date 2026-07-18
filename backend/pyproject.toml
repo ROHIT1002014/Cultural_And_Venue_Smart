@@ -15,7 +15,7 @@ asyncpg = "^0.29.0"
 alembic = "^1.13.1"
 pydantic = "^2.7.4"
 pydantic-settings = "^2.3.0"
-redis = "^5.0.4"
+redis = ">=5.0.4,<9.0.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 slowapi = "^0.1.9"
