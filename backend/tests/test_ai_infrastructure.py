@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+from typing import Any, AsyncIterator
 from uuid import uuid4
 
 import pytest
@@ -66,10 +68,10 @@ async def test_fallback_provider_success_and_failover() -> None:
 
     # Now create a failing primary to verify fallback triggers
     class FailingProvider(GeminiProvider):
-        async def generate_completion(self, *args, **kwargs) -> str:
+        async def generate_completion(self, prompt: str, system_prompt: str, tools: list[dict[str, Any]] | None = None) -> str:
             raise RuntimeError("Simulated API failure")
 
-        async def stream_completion(self, *args, **kwargs):
+        async def stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
             raise RuntimeError("Simulated streaming failure")
             yield "never reached"
 
@@ -81,18 +83,18 @@ async def test_fallback_provider_success_and_failover() -> None:
     assert any("[GPT-4o" in c for c in stream_failover)
 
 
-def test_provider_factory_create(monkeypatch) -> None:
+def test_provider_factory_create(monkeypatch: pytest.MonkeyPatch) -> None:
     provider = ProviderFactory.create_provider()
     assert isinstance(provider, FallbackProvider)
 
     # Check both default branches
     monkeypatch.setattr(get_settings(), "DEFAULT_AI_PROVIDER", "openai")
     openai_first = ProviderFactory.create_provider()
-    assert isinstance(openai_first.primary, OpenAIProvider)
+    assert isinstance(openai_first, FallbackProvider) and isinstance(openai_first.primary, OpenAIProvider)
 
     monkeypatch.setattr(get_settings(), "DEFAULT_AI_PROVIDER", "gemini")
     gemini_first = ProviderFactory.create_provider()
-    assert isinstance(gemini_first.primary, GeminiProvider)
+    assert isinstance(gemini_first, FallbackProvider) and isinstance(gemini_first.primary, GeminiProvider)
 
 
 @pytest.mark.asyncio
@@ -138,12 +140,12 @@ def test_token_counter_and_cost_tracker() -> None:
 @pytest.mark.asyncio
 async def test_rag_engine_retrieve_grounding_context() -> None:
     class MockRAGRepository:
-        async def search_keyword_chunks(self, venue_id, query_text, limit=4):
+        async def search_keyword_chunks(self, venue_id: Any, query_text: str, limit: int = 4) -> list[RAGChunk]:
             return [
                 RAGChunk(id=uuid4(), document_id=uuid4(), content="Gallery opens at 9am.", embedding=None, metadata={"title": "Guide"})
             ]
 
-    engine = RAGEngine(rag_repo=MockRAGRepository())
+    engine = RAGEngine(rag_repo=MockRAGRepository())  # type: ignore[arg-type]
     chunks = await engine.retrieve_grounding_context(venue_id=uuid4(), query_text="hours", limit=2)
     assert len(chunks) == 1
     assert chunks[0].content == "Gallery opens at 9am."

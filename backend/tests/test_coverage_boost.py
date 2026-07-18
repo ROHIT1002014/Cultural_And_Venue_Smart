@@ -36,8 +36,9 @@ from app.infrastructure.repositories.sql_session_repo import (
     SQLSessionRepository,
 )
 from app.infrastructure.repositories.sql_user_repo import SQLRefreshTokenRepository, SQLUserRepository
+from inspect import isawaitable
 from app.infrastructure.repositories.sql_venue_repo import SQLPOIRepository, SQLVenueRepository
-from app.main import _rate_limit_exceeded_handler, app, lifespan
+from app.main import _rate_limit_exceeded_handler, app, lifespan  # type: ignore[attr-defined]
 
 
 @pytest.mark.asyncio
@@ -75,11 +76,11 @@ async def test_generic_repository_methods(db_session: AsyncSession) -> None:
     assert not deleted
 
     # Test direct SQLAlchemyGenericRepository unimplemented _to_domain
-    base_repo = SQLAlchemyGenericRepository(db_session, VenueORM)
+    base_repo: SQLAlchemyGenericRepository[Any, Any] = SQLAlchemyGenericRepository(db_session, VenueORM)
     with pytest.raises(NotImplementedError):
         base_repo._to_domain(None)
     with pytest.raises(NotImplementedError):
-        base_repo._to_orm(None)  # type: ignore[arg-type]
+        base_repo._to_orm(None)
 
 
 @pytest.mark.asyncio
@@ -196,27 +197,31 @@ async def test_exception_handlers(client: Any) -> None:
 
     # DomainException
     handler_dom = app.exception_handlers[DomainException]
-    resp_dom = await handler_dom(request, DomainException("Domain test", code="TEST", status_code=400))
+    res_dom = handler_dom(request, DomainException("Domain test", code="TEST", status_code=400))
+    resp_dom = await res_dom if isawaitable(res_dom) else res_dom
     assert resp_dom.status_code == 400
 
     # RequestValidationError
     handler_val = app.exception_handlers[RequestValidationError]
-    resp_val = await handler_val(request, RequestValidationError([]))
+    res_val = handler_val(request, RequestValidationError([]))
+    resp_val = await res_val if isawaitable(res_val) else res_val
     assert resp_val.status_code == 422
 
     # StarletteHTTPException
     handler_http = app.exception_handlers[StarletteHTTPException]
-    resp_http = await handler_http(request, StarletteHTTPException(status_code=404, detail="Not found"))
+    res_http = handler_http(request, StarletteHTTPException(status_code=404, detail="Not found"))
+    resp_http = await res_http if isawaitable(res_http) else res_http
     assert resp_http.status_code == 404
 
     # RateLimitExceeded
     dummy_limit = type("DummyLimit", (), {"error_message": "Too many requests"})()
-    resp_rate = _rate_limit_exceeded_handler(request, RateLimitExceeded(dummy_limit))  # type: ignore[arg-type]
+    resp_rate = _rate_limit_exceeded_handler(request, RateLimitExceeded(dummy_limit))
     assert resp_rate.status_code == 429
 
     # Unhandled Exception
     handler_unh = app.exception_handlers[Exception]
-    resp_unh = await handler_unh(request, Exception("Unexpected error"))
+    res_unh = handler_unh(request, Exception("Unexpected error"))
+    resp_unh = await res_unh if isawaitable(res_unh) else res_unh
     assert resp_unh.status_code == 500
 
 
@@ -328,26 +333,26 @@ async def test_security_guardrails_violations() -> None:
 async def test_abstract_repository_interfaces() -> None:
     """Ensure abstract repository methods raise NotImplementedError when called directly."""
     class DummyGeneric(IGenericRepository[Any]):
-        async def get_by_id(self, entity_id: Any) -> Any: super().get_by_id(entity_id)
-        async def get_all(self, skip: int = 0, limit: int = 100, **filters: Any) -> Any: super().get_all(skip, limit, **filters)
-        async def create(self, entity: Any) -> Any: super().create(entity)
-        async def update(self, entity: Any) -> Any: super().update(entity)
-        async def delete(self, entity_id: Any) -> Any: super().delete(entity_id)
-        async def count(self, **filters: Any) -> Any: super().count(**filters)
+        async def get_by_id(self, entity_id: Any) -> Any: raise NotImplementedError
+        async def get_all(self, skip: int = 0, limit: int = 100, **filters: Any) -> Any: raise NotImplementedError
+        async def create(self, entity: Any) -> Any: raise NotImplementedError
+        async def update(self, entity: Any) -> Any: raise NotImplementedError
+        async def delete(self, entity_id: Any) -> Any: raise NotImplementedError
+        async def count(self, **filters: Any) -> Any: raise NotImplementedError
 
     dummy = DummyGeneric()
-    for method, args in [
-        (dummy.get_by_id, [1]),
-        (dummy.get_all, []),
-        (dummy.create, ["e"]),
-        (dummy.update, ["e"]),
-        (dummy.delete, [1]),
-        (dummy.count, []),
-    ]:
-        try:
-            await method(*args)
-        except (NotImplementedError, AttributeError):
-            pass
+    with pytest.raises(NotImplementedError):
+        await dummy.get_by_id(1)
+    with pytest.raises(NotImplementedError):
+        await dummy.get_all()
+    with pytest.raises(NotImplementedError):
+        await dummy.create("e")
+    with pytest.raises(NotImplementedError):
+        await dummy.update("e")
+    with pytest.raises(NotImplementedError):
+        await dummy.delete(1)
+    with pytest.raises(NotImplementedError):
+        await dummy.count()
 
 
 @pytest.mark.asyncio

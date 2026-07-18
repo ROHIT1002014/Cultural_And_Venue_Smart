@@ -62,10 +62,11 @@ export const ParkingPage: React.FC<{ venueId: string }> = ({ venueId }) => {
         {/* Lots List */}
         <div className="lg:col-span-7 space-y-4">
           {lots.map((lot) => (
-            <div
+            <button
+              type="button"
               key={lot.id}
               onClick={() => setSelectedLot(lot.id)}
-              className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 ${
+              className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 text-left w-full ${
                 selectedLot === lot.id
                   ? "bg-dark-card border-brand-500 shadow-[0_0_20px_rgba(34,197,94,0.15)]"
                   : "bg-dark-surface/80 border-dark-border hover:border-gray-500"
@@ -73,30 +74,39 @@ export const ParkingPage: React.FC<{ venueId: string }> = ({ venueId }) => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center">
-                    <Car className="w-5 h-5" />
+                  <div className="w-12 h-12 rounded-xl bg-dark-surface border border-dark-border flex items-center justify-center text-brand-400">
+                    <Car className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-100">{lot.lot_name}</h4>
-                    <span className="text-xs text-gray-400">{lot.has_ev_charging ? "⚡ Fast EV Charging Stations Available" : "Standard Parking Only"}</span>
+                    <h3 className="font-extrabold text-base text-gray-100">{lot.lot_name}</h3>
+                    <span className="text-xs text-gray-400 font-mono">ID: {lot.id}</span>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">
-                  {lot.available_spots} Spots Free
-                </span>
+                <div className="text-right">
+                  <span className="text-xl font-black text-brand-400 block">{lot.available_spots}</span>
+                  <span className="text-[10px] text-gray-400 uppercase">of {lot.total_spots} Open</span>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 text-xs text-gray-300 pt-3 border-t border-dark-border/60">
+              {/* Progress bar */}
+              <div className="w-full bg-dark-bg h-2 rounded-full overflow-hidden border border-dark-border/40">
+                <div
+                  className="bg-brand-500 h-full transition-all duration-500"
+                  style={{ width: `${(lot.available_spots / lot.total_spots) * 100}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-gray-300 pt-2 border-t border-dark-border/60">
                 <div className="flex items-center gap-2">
-                  <Accessibility className="w-4 h-4 text-brand-400" />
-                  <span>Accessible Spaces: <strong>{lot.accessible_spots_available} / {lot.accessible_spots_total}</strong></span>
+                  <span className="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                  <span>Accessible Stalls: <strong>Verified</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-yellow-400" />
                   <span>EV Charging Bays: <strong>Active</strong></span>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
@@ -109,8 +119,9 @@ export const ParkingPage: React.FC<{ venueId: string }> = ({ venueId }) => {
 
           <form onSubmit={handleReserve} className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">Selected Structure</label>
+              <label htmlFor="structure-select" className="text-xs font-semibold text-gray-300 block mb-1">Selected Structure</label>
               <select
+                id="structure-select"
                 value={selectedLot}
                 onChange={(e) => setSelectedLot(e.target.value)}
                 className="w-full bg-dark-bg border border-dark-border rounded-xl px-3 py-2.5 text-xs text-gray-100"
@@ -122,8 +133,9 @@ export const ParkingPage: React.FC<{ venueId: string }> = ({ venueId }) => {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">Vehicle License Plate</label>
+              <label htmlFor="license-input" className="text-xs font-semibold text-gray-300 block mb-1">Vehicle License Plate</label>
               <input
+                id="license-input"
                 type="text"
                 required
                 value={license}

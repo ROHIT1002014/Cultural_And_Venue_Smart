@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.21% </span>
+                <span class="strong">94.59% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>163/173</span>
+                <span class='fraction'>175/185</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.75% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/16</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.21% </span>
+                <span class="strong">94.59% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>163/173</span>
+                <span class='fraction'>175/185</span>
             </div>
         
             
@@ -236,7 +236,19 @@
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -306,6 +318,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -335,6 +348,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -355,6 +378,7 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -473,10 +497,11 @@ export const ParkingPage: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&
         {/* Lots List */}
         &lt;div className="lg:col-span-7 space-y-4"&gt;
           {lots.map((lot) =&gt; (
-            &lt;div
+            &lt;button
+              type="button"
               key={lot.id}
               onClick={<span class="fstat-no" title="function not covered" >() =&gt; setSelectedLot(lot.id)}</span>
-              className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 ${
+              className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 text-left w-full ${
                 selectedLot === lot.id
                   ? <span class="branch-0 cbranch-no" title="branch not covered" >"bg-dark-card border-brand-500 shadow-[0_0_20px_rgba(34,197,94,0.15)]"</span>
 <span class="cstat-no" title="statement not covered" >                  : "bg-dark-surface/80 border-dark-border hover:border-gray-500"</span>
@@ -484,30 +509,39 @@ export const ParkingPage: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&
             &gt;
               &lt;div className="flex items-center justify-between"&gt;
                 &lt;div className="flex items-center gap-3"&gt;
-                  &lt;div className="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center"&gt;
-                    &lt;Car className="w-5 h-5" /&gt;
+                  &lt;div className="w-12 h-12 rounded-xl bg-dark-surface border border-dark-border flex items-center justify-center text-brand-400"&gt;
+                    &lt;Car className="w-6 h-6" /&gt;
                   &lt;/div&gt;
                   &lt;div&gt;
-                    &lt;h4 className="font-bold text-gray-100"&gt;{lot.lot_name}&lt;/h4&gt;
-                    &lt;span className="text-xs text-gray-400"&gt;{lot.has_ev_charging ? <span class="branch-0 cbranch-no" title="branch not covered" >"⚡ Fast EV Charging Stations Available" : "Standard Parking Only"}&lt;</span>/span&gt;
+                    &lt;h3 className="font-extrabold text-base text-gray-100"&gt;{lot.lot_name}&lt;/h3&gt;
+                    &lt;span className="text-xs text-gray-400 font-mono"&gt;ID: {lot.id}&lt;/span&gt;
                   &lt;/div&gt;
                 &lt;/div&gt;
-                &lt;span className="font-mono text-xs text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20"&gt;
-                  {lot.available_spots} Spots Free
-                &lt;/span&gt;
+                &lt;div className="text-right"&gt;
+                  &lt;span className="text-xl font-black text-brand-400 block"&gt;{lot.available_spots}&lt;/span&gt;
+                  &lt;span className="text-[10px] text-gray-400 uppercase"&gt;of {lot.total_spots} Open&lt;/span&gt;
+                &lt;/div&gt;
               &lt;/div&gt;
 &nbsp;
-              &lt;div className="grid grid-cols-2 gap-4 text-xs text-gray-300 pt-3 border-t border-dark-border/60"&gt;
+              {/* Progress bar */}
+              &lt;div className="w-full bg-dark-bg h-2 rounded-full overflow-hidden border border-dark-border/40"&gt;
+                &lt;div
+                  className="bg-brand-500 h-full transition-all duration-500"
+                  style={{ width: `${(lot.available_spots / lot.total_spots) * 100}%` }}
+                /&gt;
+              &lt;/div&gt;
+&nbsp;
+              &lt;div className="flex items-center justify-between text-xs text-gray-300 pt-2 border-t border-dark-border/60"&gt;
                 &lt;div className="flex items-center gap-2"&gt;
-                  &lt;Accessibility className="w-4 h-4 text-brand-400" /&gt;
-                  &lt;span&gt;Accessible Spaces: &lt;strong&gt;{lot.accessible_spots_available} / {lot.accessible_spots_total}&lt;/strong&gt;&lt;/span&gt;
+                  &lt;span className="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse" /&gt;
+                  &lt;span&gt;Accessible Stalls: &lt;strong&gt;Verified&lt;/strong&gt;&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;div className="flex items-center gap-2"&gt;
                   &lt;Zap className="w-4 h-4 text-yellow-400" /&gt;
                   &lt;span&gt;EV Charging Bays: &lt;strong&gt;Active&lt;/strong&gt;&lt;/span&gt;
                 &lt;/div&gt;
               &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;/button&gt;
           ))}
         &lt;/div&gt;
 &nbsp;
@@ -520,8 +554,9 @@ export const ParkingPage: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&
 &nbsp;
           &lt;form onSubmit={handleReserve} className="space-y-4"&gt;
             &lt;div&gt;
-              &lt;label className="text-xs font-semibold text-gray-300 block mb-1"&gt;Selected Structure&lt;/label&gt;
+              &lt;label htmlFor="structure-select" className="text-xs font-semibold text-gray-300 block mb-1"&gt;Selected Structure&lt;/label&gt;
               &lt;select
+                id="structure-select"
                 value={selectedLot}
                 onChange={<span class="fstat-no" title="function not covered" >(e) =&gt; setSelectedLot(e.target.value)}</span>
                 className="w-full bg-dark-bg border border-dark-border rounded-xl px-3 py-2.5 text-xs text-gray-100"
@@ -533,8 +568,9 @@ export const ParkingPage: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&
             &lt;/div&gt;
 &nbsp;
             &lt;div&gt;
-              &lt;label className="text-xs font-semibold text-gray-300 block mb-1"&gt;Vehicle License Plate&lt;/label&gt;
+              &lt;label htmlFor="license-input" className="text-xs font-semibold text-gray-300 block mb-1"&gt;Vehicle License Plate&lt;/label&gt;
               &lt;input
+                id="license-input"
                 type="text"
                 required
                 value={license}
@@ -589,7 +625,7 @@ export const ParkingPage: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-18T17:35:32.996Z
+                at 2026-07-18T18:00:03.594Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

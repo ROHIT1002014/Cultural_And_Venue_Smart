@@ -1,5 +1,7 @@
 import json
 import logging
+import sys
+from typing import Any
 from uuid import uuid4
 
 import pytest
@@ -33,7 +35,7 @@ def test_pagination_params_and_response() -> None:
 
     # Test edge case with 0 items
     params_zero = PaginationParams(page=1, page_size=10)
-    resp_zero = PaginatedResponse.create(items=[], total_count=0, params=params_zero)
+    resp_zero: Any = PaginatedResponse.create(items=[], total_count=0, params=params_zero)
     assert resp_zero.total_pages == 0
     assert resp_zero.has_next is False
     assert resp_zero.has_prev is False
@@ -87,8 +89,7 @@ def test_json_formatter_and_setup_logging() -> None:
     assert logger.name == "my.custom.logger"
 
 
-def sys_exc_info():
-    import sys
+def sys_exc_info() -> Any:
     return sys.exc_info()
 
 

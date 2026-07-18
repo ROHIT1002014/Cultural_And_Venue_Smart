@@ -1,3 +1,4 @@
+from typing import Any
 import pytest
 from httpx import AsyncClient
 
@@ -29,17 +30,17 @@ async def test_readiness_probe_healthy(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_readiness_probe_db_failure(client: AsyncClient, monkeypatch) -> None:
+async def test_readiness_probe_db_failure(client: AsyncClient, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test readiness probe reports UNREADY when database connection fails."""
     class FailingDBSession:
-        async def __aenter__(self):
+        async def __aenter__(self) -> Any:
             return self
-        async def __aexit__(self, *args):
+        async def __aexit__(self, *args: Any) -> Any:
             pass
-        async def execute(self, *args, **kwargs):
+        async def execute(self, *args: Any, **kwargs: Any) -> Any:
             raise RuntimeError("Simulated database connection failure")
 
-    def failing_factory():
+    def failing_factory() -> Any:
         return FailingDBSession()
 
     monkeypatch.setattr(database, "async_session_factory", failing_factory)
@@ -52,13 +53,13 @@ async def test_readiness_probe_db_failure(client: AsyncClient, monkeypatch) -> N
 
 
 @pytest.mark.asyncio
-async def test_readiness_probe_redis_failure(client: AsyncClient, monkeypatch) -> None:
+async def test_readiness_probe_redis_failure(client: AsyncClient, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test readiness probe reports UNREADY when Redis ping fails."""
     class FailingRedis:
-        async def ping(self):
+        async def ping(self) -> Any:
             raise RuntimeError("Simulated Redis connection failure")
 
-    async def override_get_redis():
+    async def override_get_redis() -> Any:
         return FailingRedis()
 
     monkeypatch.setattr(health_endpoint, "get_redis", override_get_redis)

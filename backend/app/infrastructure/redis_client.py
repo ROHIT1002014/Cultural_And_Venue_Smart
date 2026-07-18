@@ -29,7 +29,10 @@ async def close_redis() -> None:
     """Close Redis client connections."""
     global redis_pool
     if redis_pool:
+        if hasattr(redis_pool.connection_pool, "disconnect"):
+            await redis_pool.connection_pool.disconnect(inuse_connections=True)
         await redis_pool.aclose()  # type: ignore[attr-defined]
+        redis_pool = None
         logger.info("Closed Redis connection pool.")
 
 

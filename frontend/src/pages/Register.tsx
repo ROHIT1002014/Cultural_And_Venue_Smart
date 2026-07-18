@@ -45,10 +45,11 @@ export const Register: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Full Name</label>
+            <label htmlFor="reg-fullname" className="text-xs font-semibold text-gray-300 block mb-1">Full Name</label>
             <div className="relative">
               <User className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
               <input
+                id="reg-fullname"
                 type="text"
                 required
                 value={fullName}
@@ -60,10 +61,11 @@ export const Register: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Email Address</label>
+            <label htmlFor="reg-email" className="text-xs font-semibold text-gray-300 block mb-1">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
               <input
+                id="reg-email"
                 type="email"
                 required
                 value={email}
@@ -75,10 +77,11 @@ export const Register: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Password</label>
+            <label htmlFor="reg-password" className="text-xs font-semibold text-gray-300 block mb-1">Password</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
               <input
+                id="reg-password"
                 type="password"
                 required
                 value={password}
@@ -90,8 +93,9 @@ export const Register: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Account Role</label>
+            <label htmlFor="reg-role" className="text-xs font-semibold text-gray-300 block mb-1">Account Role</label>
             <select
+              id="reg-role"
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
               className="w-full bg-dark-bg border border-dark-border rounded-xl px-4 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-brand-500"

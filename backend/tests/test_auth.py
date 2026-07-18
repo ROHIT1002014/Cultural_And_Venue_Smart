@@ -1,6 +1,8 @@
+from typing import Any
 import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.models.user_model import UserORM
 
@@ -123,7 +125,7 @@ async def test_get_profile_and_logout_blacklist(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_deactivated_user_blocked(client: AsyncClient, db_session) -> None:
+async def test_deactivated_user_blocked(client: AsyncClient, db_session: Any) -> None:
     """Test that deactivated users cannot log in or refresh tokens."""
     payload = {
         "email": "deactivated@example.com",

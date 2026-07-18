@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.64% </span>
+                <span class="strong">88.1% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>227/259</span>
+                <span class='fraction'>237/269</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.64% </span>
+                <span class="strong">88.1% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>227/259</span>
+                <span class='fraction'>237/269</span>
             </div>
         
             
@@ -322,7 +322,17 @@
 <a name='L257'></a><a href='#L257'>257</a>
 <a name='L258'></a><a href='#L258'>258</a>
 <a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -466,6 +476,7 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -484,6 +495,14 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
@@ -516,6 +535,7 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
@@ -582,7 +602,7 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from "react";
-import { Navigation, CheckCircle, Accessibility, Compass } from "lucide-react";
+import { Navigation, CheckCircle, Accessibility, Compass, MapPin } from "lucide-react";
 import { POI, RouteResponse } from "@/types/venue";
 import { venueService } from "@/services/venueService";
 &nbsp;
@@ -722,7 +742,8 @@ export const MapUI: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&gt; {
             const isSelectedOrigin = poi.id === selectedOrigin;
             const isSelectedDest = poi.id === selectedDest;
             return (
-              &lt;div
+              &lt;button
+                type="button"
                 key={poi.id}
                 onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >                  if (!selectedOrigin) setSelectedOrigin(poi.id);</span>
@@ -736,12 +757,19 @@ export const MapUI: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&gt; {
 <span class="cstat-no" title="statement not covered" >                    : "bg-dark-card/80 border-dark-border hover:border-brand-500/50"</span>
                 }`}
               &gt;
-                &lt;div className="p-2.5 rounded-lg bg-dark-bg border border-dark-border text-brand-400"&gt;
-                  &lt;Navigation className="w-5 h-5" /&gt;
+                &lt;div className="w-10 h-10 rounded-lg bg-dark-surface flex items-center justify-center text-brand-400 border border-dark-border/50"&gt;
+                  &lt;MapPin className="w-5 h-5" /&gt;
                 &lt;/div&gt;
-                &lt;span className="text-xs font-bold text-gray-200 line-clamp-2"&gt;{poi.name}&lt;/span&gt;
-                &lt;span className="text-[10px] font-mono text-gray-400 uppercase"&gt;{poi.category}&lt;/span&gt;
-              &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;h4 className="font-bold text-xs text-gray-200"&gt;{poi.name}&lt;/h4&gt;
+                  &lt;span className="text-[10px] text-gray-400 block mt-0.5"&gt;{poi.category}&lt;/span&gt;
+                &lt;/div&gt;
+                {poi.is_accessible &amp;&amp; (
+                  &lt;span className="inline-flex items-center gap-1 text-[9px] text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded-full border border-brand-500/20"&gt;
+                    Accessible
+                  &lt;/span&gt;
+                )}
+              &lt;/button&gt;
             );
           })}
         &lt;/div&gt;
@@ -765,8 +793,9 @@ export const MapUI: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&gt; {
         &lt;div className="md:col-span-1 space-y-4 bg-dark-card/60 p-5 rounded-2xl border border-dark-border"&gt;
           &lt;h4 className="font-bold text-sm text-gray-200"&gt;Calculate Custom Route&lt;/h4&gt;
           &lt;div&gt;
-            &lt;label className="text-xs text-gray-400 block mb-1"&gt;Origin Point&lt;/label&gt;
+            &lt;label htmlFor="origin-select" className="text-xs text-gray-400 block mb-1"&gt;Origin Point&lt;/label&gt;
             &lt;select
+              id="origin-select"
               value={selectedOrigin}
               onChange={<span class="fstat-no" title="function not covered" >(e) =&gt; setSelectedOrigin(e.target.value)}</span>
               className="w-full bg-dark-surface border border-dark-border rounded-xl px-3 py-2 text-xs text-gray-200"
@@ -779,8 +808,9 @@ export const MapUI: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&gt; {
             &lt;/select&gt;
           &lt;/div&gt;
           &lt;div&gt;
-            &lt;label className="text-xs text-gray-400 block mb-1"&gt;Destination Point&lt;/label&gt;
+            &lt;label htmlFor="dest-select" className="text-xs text-gray-400 block mb-1"&gt;Destination Point&lt;/label&gt;
             &lt;select
+              id="dest-select"
               value={selectedDest}
               onChange={<span class="fstat-no" title="function not covered" >(e) =&gt; setSelectedDest(e.target.value)}</span>
               className="w-full bg-dark-surface border border-dark-border rounded-xl px-3 py-2 text-xs text-gray-200"
@@ -847,7 +877,7 @@ export const MapUI: React.FC&lt;{ venueId: string }&gt; = ({ venueId }) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-18T17:35:32.996Z
+                at 2026-07-18T18:00:03.594Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

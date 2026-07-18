@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigation, CheckCircle, Accessibility, Compass } from "lucide-react";
+import { Navigation, CheckCircle, Accessibility, Compass, MapPin } from "lucide-react";
 import { POI, RouteResponse } from "@/types/venue";
 import { venueService } from "@/services/venueService";
 
@@ -139,7 +139,8 @@ export const MapUI: React.FC<{ venueId: string }> = ({ venueId }) => {
             const isSelectedOrigin = poi.id === selectedOrigin;
             const isSelectedDest = poi.id === selectedDest;
             return (
-              <div
+              <button
+                type="button"
                 key={poi.id}
                 onClick={() => {
                   if (!selectedOrigin) setSelectedOrigin(poi.id);
@@ -153,12 +154,19 @@ export const MapUI: React.FC<{ venueId: string }> = ({ venueId }) => {
                     : "bg-dark-card/80 border-dark-border hover:border-brand-500/50"
                 }`}
               >
-                <div className="p-2.5 rounded-lg bg-dark-bg border border-dark-border text-brand-400">
-                  <Navigation className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-lg bg-dark-surface flex items-center justify-center text-brand-400 border border-dark-border/50">
+                  <MapPin className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-bold text-gray-200 line-clamp-2">{poi.name}</span>
-                <span className="text-[10px] font-mono text-gray-400 uppercase">{poi.category}</span>
-              </div>
+                <div>
+                  <h4 className="font-bold text-xs text-gray-200">{poi.name}</h4>
+                  <span className="text-[10px] text-gray-400 block mt-0.5">{poi.category}</span>
+                </div>
+                {poi.is_accessible && (
+                  <span className="inline-flex items-center gap-1 text-[9px] text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded-full border border-brand-500/20">
+                    Accessible
+                  </span>
+                )}
+              </button>
             );
           })}
         </div>
@@ -182,8 +190,9 @@ export const MapUI: React.FC<{ venueId: string }> = ({ venueId }) => {
         <div className="md:col-span-1 space-y-4 bg-dark-card/60 p-5 rounded-2xl border border-dark-border">
           <h4 className="font-bold text-sm text-gray-200">Calculate Custom Route</h4>
           <div>
-            <label className="text-xs text-gray-400 block mb-1">Origin Point</label>
+            <label htmlFor="origin-select" className="text-xs text-gray-400 block mb-1">Origin Point</label>
             <select
+              id="origin-select"
               value={selectedOrigin}
               onChange={(e) => setSelectedOrigin(e.target.value)}
               className="w-full bg-dark-surface border border-dark-border rounded-xl px-3 py-2 text-xs text-gray-200"
@@ -196,8 +205,9 @@ export const MapUI: React.FC<{ venueId: string }> = ({ venueId }) => {
             </select>
           </div>
           <div>
-            <label className="text-xs text-gray-400 block mb-1">Destination Point</label>
+            <label htmlFor="dest-select" className="text-xs text-gray-400 block mb-1">Destination Point</label>
             <select
+              id="dest-select"
               value={selectedDest}
               onChange={(e) => setSelectedDest(e.target.value)}
               className="w-full bg-dark-surface border border-dark-border rounded-xl px-3 py-2 text-xs text-gray-200"

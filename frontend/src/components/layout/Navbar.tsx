@@ -9,9 +9,10 @@ export const Navbar: React.FC<{ onNavigate: (path: string) => void }> = ({ onNav
 
   return (
     <nav className="sticky top-0 z-40 bg-dark-surface/80 backdrop-blur-md border-b border-dark-border/60 px-6 py-3.5 flex items-center justify-between">
-      <div
+      <button
+        type="button"
         onClick={() => onNavigate("/")}
-        className="flex items-center gap-3 cursor-pointer group"
+        className="flex items-center gap-3 cursor-pointer group text-left"
       >
         <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
           <Sparkles className="w-5 h-5 animate-pulse" />
@@ -22,7 +23,7 @@ export const Navbar: React.FC<{ onNavigate: (path: string) => void }> = ({ onNav
           </span>
           <span className="block text-xs text-gray-400 font-medium">Smart AI Operations</span>
         </div>
-      </div>
+      </button>
 
       <div className="flex items-center gap-4">
         <button

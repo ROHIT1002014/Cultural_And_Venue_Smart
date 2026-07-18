@@ -39,9 +39,11 @@ async def init_db() -> None:
 
 async def close_db() -> None:
     """Dispose Async SQLAlchemy engine cleanly."""
-    global engine
+    global engine, async_session_factory
     if engine:
         await engine.dispose()
+        engine = None
+        async_session_factory = None
         logger.info("Disposed Async SQLAlchemy database engine.")
 
 

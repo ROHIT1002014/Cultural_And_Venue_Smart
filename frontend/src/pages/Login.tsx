@@ -42,10 +42,11 @@ export const Login: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavi
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Email Address</label>
+            <label htmlFor="login-email" className="text-xs font-semibold text-gray-300 block mb-1">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
               <input
+                id="login-email"
                 type="email"
                 required
                 value={email}
@@ -57,10 +58,11 @@ export const Login: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavi
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">Password</label>
+            <label htmlFor="login-password" className="text-xs font-semibold text-gray-300 block mb-1">Password</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
               <input
+                id="login-password"
                 type="password"
                 required
                 value={password}

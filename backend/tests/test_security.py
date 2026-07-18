@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from app.core.exceptions import SecurityGuardException, ValidationDomainException
+from app.core.exceptions import SecurityGuardException, UnauthorizedException, ValidationDomainException
 from app.core.security import rate_limiter
 from app.core.security.prompt_guard import PromptGuard
 from app.core.security.sanitization import sanitize_string, validate_uuid
@@ -134,5 +134,5 @@ async def test_rate_limiter_and_lockout() -> None:
 
     # 5th failed attempt locks account
     await rate_limiter.record_login_attempt(username, success=False, ip_address=ip)
-    with pytest.raises(rate_limiter.UnauthorizedException):
+    with pytest.raises(UnauthorizedException):
         await rate_limiter.check_account_lockout(username)
