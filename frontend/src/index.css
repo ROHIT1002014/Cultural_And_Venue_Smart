@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-bg text-gray-100 font-sans antialiased min-h-screen overflow-x-hidden;
+  }
+}
+
+@layer components {
+  /* Glassmorphism card utilities with smooth hover transitions */
+  .glass-panel {
+    @apply bg-dark-surface/80 backdrop-blur-md border border-dark-border/60 rounded-2xl shadow-xl transition-all duration-300;
+  }
+
+  .glass-card {
+    @apply bg-dark-card/60 backdrop-blur-sm border border-dark-border/40 rounded-xl p-5 hover:border-brand-500/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.15)] transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg hover:from-brand-500 hover:to-brand-400 hover:shadow-brand-500/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-dark-card border border-dark-border hover:border-gray-500 text-gray-200 font-medium px-4 py-2 rounded-xl active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}

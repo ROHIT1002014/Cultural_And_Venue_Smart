@@ -1,0 +1,8 @@
+# codeowners for Cultural & Venue Smart Copilot Platform
+*                   @rohit-engineering-lead @security-governance-team
+/backend/app/domain/ @domain-architects @rohit-engineering-lead
+/backend/app/core/security/ @security-governance-team @rohit-engineering-lead
+/backend/app/application/agents/ @ai-research-team @langgraph-engineers
+/frontend/          @frontend-lead @ui-ux-design
+/.github/           @devops-lead @rohit-engineering-lead
+/docker-compose.yml @devops-lead
