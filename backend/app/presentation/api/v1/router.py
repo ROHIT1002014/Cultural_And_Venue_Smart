@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from app.presentation.api.v1.endpoints import health, auth, venue, parking, assistant
+
+from app.presentation.api.v1.endpoints import assistant, auth, health, parking, venue
 
 api_router = APIRouter()
 api_router.include_router(health.router)

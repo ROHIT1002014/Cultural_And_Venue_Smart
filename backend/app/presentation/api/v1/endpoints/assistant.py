@@ -1,15 +1,18 @@
-from typing import Annotated, Sequence
+from collections.abc import Sequence
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Request
-from app.core.security.rate_limiter import limiter
-from app.domain.entities.user import User
+
 from app.application.schemas.assistant import (
     ChatRequestDTO,
     ChatResponseDTO,
-    SessionResponseDTO,
     FAQSearchRequestDTO,
     FAQSearchResponseDTO,
+    SessionResponseDTO,
 )
 from app.application.services.assistant_service import AssistantService
+from app.core.security.rate_limiter import limiter
+from app.domain.entities.user import User
 from app.presentation.deps import get_assistant_service, get_current_user
 
 router = APIRouter(prefix="/assistant", tags=["AI Copilot & Multi-Agent Engine"])

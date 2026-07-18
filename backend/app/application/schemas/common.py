@@ -1,5 +1,6 @@
+from datetime import UTC, datetime
+
 from pydantic import BaseModel, Field
-from datetime import datetime, timezone
 
 
 class ErrorResponseDTO(BaseModel):
@@ -7,7 +8,7 @@ class ErrorResponseDTO(BaseModel):
     error: str = Field(..., description="Error code string")
     message: str = Field(..., description="Human-readable description of error")
     status_code: int = Field(..., description="HTTP status code")
-    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 class StatusResponseDTO(BaseModel):

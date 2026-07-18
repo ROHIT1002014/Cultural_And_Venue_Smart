@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from uuid import UUID
-from app.domain.entities.user import User, RefreshToken
+
+from app.domain.entities.user import RefreshToken, User
 from app.domain.repositories.base import IGenericRepository
 
 

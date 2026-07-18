@@ -1,21 +1,22 @@
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.core.config import get_settings
-from app.core.logging import setup_logging, get_logger
+from app.core.logging import get_logger, setup_logging
 from app.core.security.rate_limiter import limiter
-from app.infrastructure.database import init_db, close_db
-from app.infrastructure.redis_client import init_redis, close_redis
+from app.infrastructure.database import close_db, init_db
+from app.infrastructure.redis_client import close_redis, init_redis
 from app.presentation.api.v1.router import api_router
-from app.presentation.middlewares.security_headers import SecurityHeadersMiddleware
-from app.presentation.middlewares.size_limit import RequestSizeLimitMiddleware
 from app.presentation.middlewares.exception_handler import setup_exception_handlers
 from app.presentation.middlewares.logging_middleware import LoggingMiddleware
+from app.presentation.middlewares.security_headers import SecurityHeadersMiddleware
+from app.presentation.middlewares.size_limit import RequestSizeLimitMiddleware
 
 logger = get_logger(__name__)
 

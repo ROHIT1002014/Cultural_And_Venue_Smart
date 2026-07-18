@@ -1,7 +1,11 @@
-from typing import Any, Generic, Sequence, Type, TypeVar
+from collections.abc import Sequence
+from typing import Any, Generic, TypeVar
 from uuid import UUID
-from sqlalchemy import select, func, delete as sa_delete
+
+from sqlalchemy import delete as sa_delete
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.domain.repositories.base import IGenericRepository
 
 DomainEntityT = TypeVar("DomainEntityT")
@@ -11,7 +15,7 @@ ORMModelT = TypeVar("ORMModelT")
 class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[DomainEntityT, ORMModelT]):
     """Generic async repository base class converting cleanly between SQLAlchemy ORM rows and pure Domain Entities."""
 
-    def __init__(self, session: AsyncSession, model_class: Type[ORMModelT]):
+    def __init__(self, session: AsyncSession, model_class: type[ORMModelT]):
         self.session = session
         self.model_class = model_class
 
@@ -24,7 +28,7 @@ class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[Dom
         raise NotImplementedError
 
     async def get_by_id(self, entity_id: UUID) -> DomainEntityT | None:
-        result = await self.session.execute(select(self.model_class).where(getattr(self.model_class, "id") == entity_id))
+        result = await self.session.execute(select(self.model_class).where(self.model_class.id == entity_id))
         orm_obj = result.scalar_one_or_none()
         return self._to_domain(orm_obj) if orm_obj else None
 
@@ -56,7 +60,7 @@ class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[Dom
         return domain
 
     async def delete(self, entity_id: UUID) -> bool:
-        stmt = sa_delete(self.model_class).where(getattr(self.model_class, "id") == entity_id)
+        stmt = sa_delete(self.model_class).where(self.model_class.id == entity_id)
         result = await self.session.execute(stmt)
         await self.session.commit()
         return result.rowcount > 0

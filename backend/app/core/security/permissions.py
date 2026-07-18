@@ -1,4 +1,4 @@
-from typing import Set
+
 from app.core.constants import UserRole
 
 # Define granular permission strings for domain actions
@@ -18,7 +18,7 @@ PERMISSION_USER_MANAGE = "user:manage"
 PERMISSION_AI_CHAT = "ai:chat"
 
 # Role hierarchy mappings to permissions (Inheritance and Least Privilege)
-ROLE_PERMISSIONS_MATRIX: dict[UserRole, Set[str]] = {
+ROLE_PERMISSIONS_MATRIX: dict[UserRole, set[str]] = {
     UserRole.GUEST: {
         PERMISSION_VENUE_READ,
         PERMISSION_PARKING_READ,
@@ -54,7 +54,7 @@ ROLE_PERMISSIONS_MATRIX: dict[UserRole, Set[str]] = {
 }
 
 
-def get_permissions_for_role(role: UserRole | str) -> Set[str]:
+def get_permissions_for_role(role: UserRole | str) -> set[str]:
     """Retrieve all permissions assigned to a specific role."""
     try:
         enum_role = UserRole(role) if isinstance(role, str) else role

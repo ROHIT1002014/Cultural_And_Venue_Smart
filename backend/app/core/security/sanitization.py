@@ -1,6 +1,7 @@
 import html
 import re
 from uuid import UUID
+
 from app.core.exceptions import ValidationDomainException
 
 # SQL injection keywords pattern check

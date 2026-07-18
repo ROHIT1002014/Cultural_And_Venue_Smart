@@ -1,16 +1,16 @@
 import json
 import logging
 import sys
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime
+from typing import Any
 
 
 class JSONFormatter(logging.Formatter):
     """Custom JSON formatter producing structured log lines compatible with Grafana Loki and CloudWatch."""
 
     def format(self, record: logging.LogRecord) -> str:
-        log_entry: Dict[str, Any] = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+        log_entry: dict[str, Any] = {
+            "timestamp": datetime.now(UTC).isoformat(),
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
@@ -18,15 +18,15 @@ class JSONFormatter(logging.Formatter):
 
         # Include custom extra fields like trace_id, user_id, project, etc.
         if hasattr(record, "trace_id"):
-            log_entry["trace_id"] = getattr(record, "trace_id")
+            log_entry["trace_id"] = record.trace_id
         if hasattr(record, "user_id"):
-            log_entry["user_id"] = getattr(record, "user_id")
+            log_entry["user_id"] = record.user_id
         if hasattr(record, "project"):
-            log_entry["project"] = getattr(record, "project")
+            log_entry["project"] = record.project
         if hasattr(record, "agent_name"):
-            log_entry["agent_name"] = getattr(record, "agent_name")
+            log_entry["agent_name"] = record.agent_name
         if hasattr(record, "latency_ms"):
-            log_entry["latency_ms"] = getattr(record, "latency_ms")
+            log_entry["latency_ms"] = record.latency_ms
 
         # Include stack trace if exception occurred
         if record.exc_info:

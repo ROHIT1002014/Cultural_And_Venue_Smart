@@ -1,5 +1,6 @@
 import pytest
 from httpx import AsyncClient
+
 import app.presentation.api.v1.endpoints.health as health_endpoint
 from app.infrastructure import database
 

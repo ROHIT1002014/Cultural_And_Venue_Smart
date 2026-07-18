@@ -1,6 +1,7 @@
 from abc import abstractmethod
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
+
 from app.domain.entities.parking import ParkingLot, ParkingReservation
 from app.domain.repositories.base import IGenericRepository
 

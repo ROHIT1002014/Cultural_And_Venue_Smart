@@ -1,17 +1,19 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, Request
 from fastapi.security import OAuth2PasswordRequestForm
-from app.core.security.rate_limiter import limiter
-from app.domain.entities.user import User
+
 from app.application.schemas.auth import (
+    RefreshTokenRequestDTO,
+    TokenResponseDTO,
     UserCreateDTO,
     UserLoginDTO,
-    TokenResponseDTO,
     UserResponseDTO,
-    RefreshTokenRequestDTO,
 )
 from app.application.schemas.common import StatusResponseDTO
 from app.application.services.auth_service import AuthService
+from app.core.security.rate_limiter import limiter
+from app.domain.entities.user import User
 from app.presentation.deps import get_auth_service, get_current_user, oauth2_scheme
 
 router = APIRouter(prefix="/auth", tags=["Authentication & Security"])

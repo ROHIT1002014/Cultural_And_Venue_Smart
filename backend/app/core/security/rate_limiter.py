@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
@@ -28,7 +29,7 @@ async def record_login_attempt(email: str, success: bool, ip_address: str) -> No
 
     if attempts >= 5:
         # Lock account for 15 minutes
-        await redis.set(lock_key, datetime.now(timezone.utc).isoformat(), ex=900)
+        await redis.set(lock_key, datetime.now(UTC).isoformat(), ex=900)
 
 
 async def check_account_lockout(email: str) -> None:

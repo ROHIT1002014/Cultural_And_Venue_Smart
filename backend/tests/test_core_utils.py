@@ -1,22 +1,23 @@
 import json
 import logging
-import pytest
 from uuid import uuid4
-from datetime import timedelta
-from app.core.pagination import PaginationParams, PaginatedResponse
-from app.core.logging import JSONFormatter, setup_logging, get_logger
+
+import pytest
+
+from app.core.exceptions import UnauthorizedException
+from app.core.logging import JSONFormatter, get_logger, setup_logging
+from app.core.pagination import PaginatedResponse, PaginationParams
 from app.core.security.jwt import (
     create_access_token,
     create_refresh_token,
     hash_refresh_token,
-    verify_access_token,
     revoke_access_token,
+    verify_access_token,
 )
 from app.core.security.rate_limiter import (
     check_account_lockout,
     record_login_attempt,
 )
-from app.core.exceptions import UnauthorizedException
 
 
 def test_pagination_params_and_response() -> None:
@@ -66,7 +67,7 @@ def test_json_formatter_and_setup_logging() -> None:
     # Test with exception
     try:
         raise ValueError("Simulated error")
-    except ValueError as exc:
+    except ValueError:
         record_exc = logging.LogRecord(
             name="exc.logger",
             level=logging.ERROR,

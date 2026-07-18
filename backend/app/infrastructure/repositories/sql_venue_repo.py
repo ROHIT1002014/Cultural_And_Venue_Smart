@@ -1,10 +1,12 @@
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.domain.entities.venue import Venue, PointOfInterest
-from app.domain.repositories.venue_repo import IVenueRepository, IPOIRepository
-from app.infrastructure.models.venue_model import VenueORM, PointOfInterestORM
+
+from app.domain.entities.venue import PointOfInterest, Venue
+from app.domain.repositories.venue_repo import IPOIRepository, IVenueRepository
+from app.infrastructure.models.venue_model import PointOfInterestORM, VenueORM
 from app.infrastructure.repositories.generic_repo import SQLAlchemyGenericRepository
 
 

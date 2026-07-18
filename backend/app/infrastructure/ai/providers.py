@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import AsyncGenerator, Dict, Any, List
+from collections.abc import AsyncGenerator
+from typing import Any
+
 from app.core.config import get_settings
 from app.core.logging import get_logger
 
@@ -10,7 +12,7 @@ class ILLMProvider(ABC):
     """Abstract interface for external LLM API providers."""
 
     @abstractmethod
-    async def generate_completion(self, prompt: str, system_prompt: str, tools: List[Dict[str, Any]] | None = None) -> str:
+    async def generate_completion(self, prompt: str, system_prompt: str, tools: list[dict[str, Any]] | None = None) -> str:
         """Generate synchronous completion string."""
         pass
 
@@ -26,7 +28,7 @@ class GeminiProvider(ILLMProvider):
     def __init__(self, api_key: str | None = None):
         self.api_key = api_key or get_settings().GEMINI_API_KEY
 
-    async def generate_completion(self, prompt: str, system_prompt: str, tools: List[Dict[str, Any]] | None = None) -> str:
+    async def generate_completion(self, prompt: str, system_prompt: str, tools: list[dict[str, Any]] | None = None) -> str:
         logger.debug("Calling Gemini API generate_completion...")
         # Simulated or HTTPX client execution to Gemini API
         return f"[Gemini 1.5 Pro]: Processed query '{prompt[:40]}...' with grounded knowledge."
@@ -43,7 +45,7 @@ class OpenAIProvider(ILLMProvider):
     def __init__(self, api_key: str | None = None):
         self.api_key = api_key or get_settings().OPENAI_API_KEY
 
-    async def generate_completion(self, prompt: str, system_prompt: str, tools: List[Dict[str, Any]] | None = None) -> str:
+    async def generate_completion(self, prompt: str, system_prompt: str, tools: list[dict[str, Any]] | None = None) -> str:
         logger.debug("Calling OpenAI API generate_completion...")
         return f"[GPT-4o]: Processed query '{prompt[:40]}...' via function calling."
 
@@ -59,7 +61,7 @@ class FallbackProvider(ILLMProvider):
         self.primary = primary
         self.backup = backup
 
-    async def generate_completion(self, prompt: str, system_prompt: str, tools: List[Dict[str, Any]] | None = None) -> str:
+    async def generate_completion(self, prompt: str, system_prompt: str, tools: list[dict[str, Any]] | None = None) -> str:
         try:
             return await self.primary.generate_completion(prompt, system_prompt, tools)
         except Exception as exc:

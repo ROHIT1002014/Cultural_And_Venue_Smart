@@ -1,7 +1,8 @@
 from abc import abstractmethod
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
-from app.domain.entities.venue import Venue, PointOfInterest
+
+from app.domain.entities.venue import PointOfInterest, Venue
 from app.domain.repositories.base import IGenericRepository
 
 

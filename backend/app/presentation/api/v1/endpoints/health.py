@@ -1,6 +1,8 @@
 from typing import Any
+
 from fastapi import APIRouter, Response
 from sqlalchemy import text
+
 from app.core.logging import get_logger
 from app.infrastructure import database
 from app.infrastructure.redis_client import get_redis

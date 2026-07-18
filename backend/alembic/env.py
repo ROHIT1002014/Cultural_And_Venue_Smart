@@ -1,20 +1,15 @@
 import asyncio
 from logging.config import fileConfig
+
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
+
 from alembic import context
 
 # Import settings and all ORM models for autogenerate
 from app.core.config import get_settings
 from app.infrastructure.models.base import Base
-from app.infrastructure.models import (
-    user_model,
-    venue_model,
-    parking_model,
-    session_model,
-    audit_model
-)
 
 config = context.config
 

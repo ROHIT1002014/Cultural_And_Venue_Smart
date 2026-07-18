@@ -1,7 +1,9 @@
 import re
-from typing import Any, Dict
+from typing import Any
+
 from pydantic import BaseModel, ValidationError
-from app.core.exceptions import SecurityGuardException, ValidationDomainException
+
+from app.core.exceptions import ValidationDomainException
 
 # PII masking patterns (Emails, SSNs, phone numbers)
 PII_EMAIL_PATTERN = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b")
@@ -44,7 +46,7 @@ class OutputValidator:
     """Validates that tool function calling arguments strictly adhere to expected Pydantic schemas."""
 
     @classmethod
-    def validate_tool_args(cls, schema_class: type[BaseModel], args: Dict[str, Any]) -> BaseModel:
+    def validate_tool_args(cls, schema_class: type[BaseModel], args: dict[str, Any]) -> BaseModel:
         try:
             return schema_class.model_validate(args)
         except ValidationError as exc:

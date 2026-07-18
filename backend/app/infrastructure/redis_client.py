@@ -1,4 +1,5 @@
 from redis.asyncio import Redis, from_url
+
 from app.core.config import get_settings
 from app.core.logging import get_logger
 

@@ -1,22 +1,23 @@
 import hashlib
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime, timedelta
+from typing import Any
 from uuid import UUID, uuid4
+
 from jose import JWTError, jwt
 
 from app.core.config import get_settings
-from app.core.exceptions import UnauthorizedException
 from app.core.constants import UserRole
+from app.core.exceptions import UnauthorizedException
 from app.infrastructure.redis_client import get_redis
 
 
-def create_access_token(user_id: UUID | str, role: UserRole | str, extra_claims: Dict[str, Any] | None = None) -> str:
+def create_access_token(user_id: UUID | str, role: UserRole | str, extra_claims: dict[str, Any] | None = None) -> str:
     """Generate a short-lived JWT access token signed with HMAC or RSA algorithms."""
     settings = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     expire = now + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    claims: Dict[str, Any] = {
+    claims: dict[str, Any] = {
         "sub": str(user_id),
         "role": str(role),
         "iat": now,
@@ -43,7 +44,7 @@ def hash_refresh_token(raw_token: str) -> str:
     return hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
 
 
-async def verify_access_token(token: str) -> Dict[str, Any]:
+async def verify_access_token(token: str) -> dict[str, Any]:
     """Verify and decode a JWT access token, ensuring it is not expired or blacklisted in Redis."""
     settings = get_settings()
     try:
@@ -72,7 +73,7 @@ async def revoke_access_token(token: str) -> None:
         jti = payload.get("jti")
         exp = payload.get("exp")
         if jti and exp:
-            ttl = int(exp - datetime.now(timezone.utc).timestamp())
+            ttl = int(exp - datetime.now(UTC).timestamp())
             if ttl > 0:
                 redis = await get_redis()
                 await redis.set(f"blacklist:jwt:{jti}", "revoked", ex=ttl)

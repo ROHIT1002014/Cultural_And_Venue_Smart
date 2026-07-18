@@ -3,9 +3,9 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.application.schemas.common import ErrorResponseDTO
 from app.core.exceptions import DomainException
 from app.core.logging import get_logger
-from app.application.schemas.common import ErrorResponseDTO
 
 logger = get_logger(__name__)
 

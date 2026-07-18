@@ -1,8 +1,9 @@
-from typing import Annotated, Sequence
+from collections.abc import Sequence
+from typing import Annotated
 from uuid import UUID
+
 from fastapi import APIRouter, Depends
-from app.core.security.permissions import PERMISSION_PARKING_UPDATE, PERMISSION_PARKING_RESERVE
-from app.domain.entities.user import User
+
 from app.application.schemas.parking import (
     ParkingLotCreateDTO,
     ParkingLotResponseDTO,
@@ -10,7 +11,9 @@ from app.application.schemas.parking import (
     ReservationResponseDTO,
 )
 from app.application.services.parking_service import ParkingService
-from app.presentation.deps import get_parking_service, require_permission, get_current_user
+from app.core.security.permissions import PERMISSION_PARKING_RESERVE, PERMISSION_PARKING_UPDATE
+from app.domain.entities.user import User
+from app.presentation.deps import get_parking_service, require_permission
 
 router = APIRouter(prefix="/parking", tags=["Parking & Logistics"])
 

@@ -1,5 +1,5 @@
-from typing import Any, Dict, List
-from uuid import UUID
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -7,7 +7,7 @@ class ToolDefinition(BaseModel):
     """OpenAI/Gemini function calling metadata specification."""
     name: str = Field(..., description="Function identifier name")
     description: str = Field(..., description="Clear explanation of what the tool executes")
-    parameters: Dict[str, Any] = Field(..., description="JSON Schema object defining parameters")
+    parameters: dict[str, Any] = Field(..., description="JSON Schema object defining parameters")
 
 
 # Pre-defined tool specifications for AI model function calling
@@ -70,7 +70,7 @@ TOOL_TRIGGER_EMERGENCY = ToolDefinition(
     }
 )
 
-AVAILABLE_TOOLS: List[ToolDefinition] = [
+AVAILABLE_TOOLS: list[ToolDefinition] = [
     TOOL_FIND_POI,
     TOOL_CHECK_PARKING,
     TOOL_TRIGGER_EMERGENCY,

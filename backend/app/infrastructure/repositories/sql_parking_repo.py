@@ -1,7 +1,9 @@
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.domain.entities.parking import ParkingLot, ParkingReservation
 from app.domain.repositories.parking_repo import IParkingLotRepository, IParkingReservationRepository
 from app.infrastructure.models.parking_model import ParkingLotORM, ParkingReservationORM

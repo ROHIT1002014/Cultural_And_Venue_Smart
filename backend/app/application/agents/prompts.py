@@ -1,7 +1,7 @@
 """Version-controlled system prompts for LangGraph multi-agent orchestrator and domain sub-agents."""
-from typing import Any, Dict
+from typing import Any
 
-PROMPT_ORCHESTRATOR_V1: Dict[str, Any] = {
+PROMPT_ORCHESTRATOR_V1: dict[str, Any] = {
     "version": "v1.0.0",
     "updated_at": "2026-07-16",
     "description": "Master orchestrator agent prompt for intent routing across specialized cultural sub-agents.",
@@ -20,7 +20,7 @@ Your responsibilities:
 Always synthesize answers cleanly, grounded solely on verified context without hallucinations. Maintain an inclusive, polite tone."""
 }
 
-PROMPT_NAVIGATION_AGENT_V1: Dict[str, Any] = {
+PROMPT_NAVIGATION_AGENT_V1: dict[str, Any] = {
     "version": "v1.0.0",
     "template": """You are the Navigation & Wayfinding Specialist Agent.
 When providing directions:
@@ -29,14 +29,14 @@ When providing directions:
 3. If unsure of coordinates, call the `find_poi` or `calculate_route` tool strictly."""
 }
 
-PROMPT_PARKING_AGENT_V1: Dict[str, Any] = {
+PROMPT_PARKING_AGENT_V1: dict[str, Any] = {
     "version": "v1.0.0",
     "template": """You are the Parking & Logistics Specialist Agent.
 Provide exact spot capacities, EV fast-charging availability, and wheelchair accessible spot counts.
 When requested to check parking status, execute the `check_parking_status` tool."""
 }
 
-PROMPT_EMERGENCY_AGENT_V1: Dict[str, Any] = {
+PROMPT_EMERGENCY_AGENT_V1: dict[str, Any] = {
     "version": "v1.0.0",
     "template": """You are the Priority Emergency & Evacuation Specialist Agent.
 Your top priority is life safety. Give direct, authoritative, calm guidance directing guests immediately to nearest verified emergency exits avoiding elevators during fire alarms."""

@@ -1,14 +1,15 @@
 from abc import abstractmethod
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
-from app.domain.entities.session import (
-    ConversationSession,
-    ChatMessage,
-    RAGDocument,
-    RAGChunk,
-    EmergencyAlert,
-)
+
 from app.domain.entities.item import LostItem
+from app.domain.entities.session import (
+    ChatMessage,
+    ConversationSession,
+    EmergencyAlert,
+    RAGChunk,
+    RAGDocument,
+)
 from app.domain.repositories.base import IGenericRepository
 
 

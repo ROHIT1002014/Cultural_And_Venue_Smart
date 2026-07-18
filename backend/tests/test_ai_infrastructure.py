@@ -1,17 +1,19 @@
-import pytest
 from uuid import uuid4
+
+import pytest
+
+from app.application.agents.tools import AVAILABLE_TOOLS, TOOL_FIND_POI
+from app.core.config import get_settings
+from app.domain.entities.session import RAGChunk
+from app.infrastructure.ai.memory import RedisMemory
 from app.infrastructure.ai.providers import (
+    FallbackProvider,
     GeminiProvider,
     OpenAIProvider,
-    FallbackProvider,
     ProviderFactory,
 )
-from app.infrastructure.ai.memory import RedisMemory
-from app.infrastructure.ai.token_counter import TokenCounter, CostTracker
 from app.infrastructure.ai.rag import RAGEngine
-from app.application.agents.tools import AVAILABLE_TOOLS, TOOL_FIND_POI
-from app.domain.entities.session import RAGChunk
-from app.core.config import get_settings
+from app.infrastructure.ai.token_counter import CostTracker, TokenCounter
 
 
 @pytest.mark.asyncio

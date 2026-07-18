@@ -1,9 +1,7 @@
-from datetime import datetime, timezone
-from typing import Sequence
+from collections.abc import Sequence
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
-from app.core.exceptions import EntityNotFoundException, ValidationDomainException
-from app.domain.entities.parking import ParkingLot, ParkingReservation
-from app.domain.repositories.parking_repo import IParkingLotRepository, IParkingReservationRepository
+
 from app.application.schemas.parking import (
     ParkingLotCreateDTO,
     ParkingLotResponseDTO,
@@ -11,6 +9,9 @@ from app.application.schemas.parking import (
     ReservationResponseDTO,
 )
 from app.application.services.audit_service import AuditLogService
+from app.core.exceptions import EntityNotFoundException, ValidationDomainException
+from app.domain.entities.parking import ParkingLot, ParkingReservation
+from app.domain.repositories.parking_repo import IParkingLotRepository, IParkingReservationRepository
 
 
 class ParkingService:
@@ -28,7 +29,7 @@ class ParkingService:
 
     async def add_lot(self, dto: ParkingLotCreateDTO, user_id: UUID | None = None) -> ParkingLotResponseDTO:
         """Create and register a new parking lot for a venue."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         lot = ParkingLot(
             id=uuid4(),
             venue_id=dto.venue_id,
@@ -76,7 +77,7 @@ class ParkingService:
         lot.available_spots -= 1
         if dto.requires_accessible_spot:
             lot.accessible_spots_available -= 1
-        lot.updated_at = datetime.now(timezone.utc)
+        lot.updated_at = datetime.now(UTC)
         await self.lot_repo.update(lot)
 
         reservation = ParkingReservation(
@@ -84,10 +85,10 @@ class ParkingService:
             lot_id=lot.id,
             user_id=user_id,
             vehicle_license=dto.vehicle_license.upper(),
-            check_in_time=datetime.now(timezone.utc),
+            check_in_time=datetime.now(UTC),
             check_out_time=None,
             status="ACTIVE",
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
         saved_res = await self.reservation_repo.create(reservation)
 

@@ -1,17 +1,18 @@
-from datetime import datetime, timezone
-from typing import List, Sequence
+from collections.abc import Sequence
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
-from app.domain.entities.session import ConversationSession, ChatMessage, RAGDocument, RAGChunk
-from app.domain.repositories.session_repo import ISessionRepository, IMessageRepository, IRAGRepository
+
+from app.application.agents.orchestrator import OrchestratorAgent
 from app.application.schemas.assistant import (
     ChatRequestDTO,
     ChatResponseDTO,
-    SessionResponseDTO,
+    FAQItemDTO,
     FAQSearchRequestDTO,
     FAQSearchResponseDTO,
-    FAQItemDTO,
+    SessionResponseDTO,
 )
-from app.application.agents.orchestrator import OrchestratorAgent
+from app.domain.entities.session import ChatMessage, ConversationSession
+from app.domain.repositories.session_repo import IMessageRepository, IRAGRepository, ISessionRepository
 
 
 class AssistantService:
@@ -31,13 +32,13 @@ class AssistantService:
 
     async def chat(self, user_id: UUID, user_role: str, dto: ChatRequestDTO) -> ChatResponseDTO:
         """Process a chat message, retrieving RAG chunks and dispatching to the orchestrator."""
-        rag_chunks_text: List[str] = []
+        rag_chunks_text: list[str] = []
         if dto.venue_id:
             chunks = await self.rag_repo.search_keyword_chunks(venue_id=dto.venue_id, query_text=dto.message, limit=3)
             rag_chunks_text = [c.content for c in chunks]
 
         # Manage conversation session
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         session_id = dto.session_id or uuid4()
         session = await self.session_repo.get_by_id(session_id) if dto.session_id else None
         if not session:
@@ -84,7 +85,7 @@ class AssistantService:
             tool_calls=[{"tool_name": t.tool_name, "arguments": t.arguments} for t in response.executed_tools],
             latency_seconds=0.1,
             token_count=response.token_usage.completion_tokens,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
         await self.message_repo.create(assistant_msg)
 

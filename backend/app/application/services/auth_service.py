@@ -1,5 +1,13 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
+
+from app.application.schemas.auth import (
+    TokenResponseDTO,
+    UserCreateDTO,
+    UserLoginDTO,
+    UserResponseDTO,
+)
+from app.application.services.audit_service import AuditLogService
 from app.core.config import get_settings
 from app.core.exceptions import (
     EntityNotFoundException,
@@ -14,15 +22,8 @@ from app.core.security.jwt import (
 )
 from app.core.security.password import hash_password, verify_password
 from app.core.security.rate_limiter import check_account_lockout, record_login_attempt
-from app.domain.entities.user import User, RefreshToken
-from app.domain.repositories.user_repo import IUserRepository, IRefreshTokenRepository
-from app.application.schemas.auth import (
-    UserCreateDTO,
-    UserLoginDTO,
-    TokenResponseDTO,
-    UserResponseDTO,
-)
-from app.application.services.audit_service import AuditLogService
+from app.domain.entities.user import RefreshToken, User
+from app.domain.repositories.user_repo import IRefreshTokenRepository, IUserRepository
 
 
 class AuthService:
@@ -44,7 +45,7 @@ class AuthService:
         if existing:
             raise ValidationDomainException(message="A user with this email address is already registered.")
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         user = User(
             id=uuid4(),
             email=dto.email.lower(),
@@ -93,10 +94,10 @@ class AuthService:
         if not stored_token or stored_token.is_revoked:
             raise UnauthorizedException("Invalid or revoked refresh token provided.")
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         expires_at = stored_token.expires_at
         if expires_at.tzinfo is None:
-            expires_at = expires_at.replace(tzinfo=timezone.utc)
+            expires_at = expires_at.replace(tzinfo=UTC)
         if expires_at < now:
             raise UnauthorizedException("Refresh token has expired. Please log in again.")
 
@@ -134,7 +135,7 @@ class AuthService:
         access_token = create_access_token(user_id=user.id, role=user.role)
         raw_refresh, refresh_hash = create_refresh_token(user_id=user.id)
 
-        expires_at = datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+        expires_at = datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
         token_entity = RefreshToken(
             id=uuid4(),
             user_id=user.id,
@@ -142,7 +143,7 @@ class AuthService:
             expires_at=expires_at,
             is_revoked=False,
             ip_address=ip_address,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
         await self.refresh_repo.create(token_entity)
 

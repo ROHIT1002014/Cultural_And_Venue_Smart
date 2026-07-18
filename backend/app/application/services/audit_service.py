@@ -1,6 +1,6 @@
 import json
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime
+from typing import Any
 from uuid import UUID, uuid4
 
 from app.core.logging import get_logger
@@ -21,7 +21,7 @@ class AuditLogService:
         action: str,
         entity_name: str,
         entity_id: str | UUID,
-        changes: Dict[str, Any] | None = None,
+        changes: dict[str, Any] | None = None,
         ip_address: str | None = None,
         trace_id: str | None = None,
     ) -> None:
@@ -35,7 +35,7 @@ class AuditLogService:
             "changes": changes or {},
             "ip_address": ip_address or "UNKNOWN",
             "trace_id": trace_id or "NONE",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
 
         # Log structured entry immediately to stdout (captured by Loki / cloud monitoring)

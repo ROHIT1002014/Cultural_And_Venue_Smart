@@ -1,22 +1,21 @@
 import time
-from datetime import datetime, timezone
-from typing import Any, Dict, List
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from app.core.logging import get_logger
-from app.core.security.prompt_guard import PromptGuard
+from app.application.agents.prompts import PROMPT_ORCHESTRATOR_V1
+from app.application.agents.sub_agents import (
+    EmergencyAgent,
+    NavigationAgent,
+    ParkingAgent,
+)
 from app.application.schemas.assistant import (
     ChatRequestDTO,
     ChatResponseDTO,
     ExecutedToolDTO,
     TokenUsageDTO,
 )
-from app.application.agents.prompts import PROMPT_ORCHESTRATOR_V1
-from app.application.agents.sub_agents import (
-    NavigationAgent,
-    ParkingAgent,
-    EmergencyAgent,
-)
+from app.core.logging import get_logger
+from app.core.security.prompt_guard import PromptGuard
 
 logger = get_logger(__name__)
 
@@ -39,7 +38,7 @@ class OrchestratorAgent:
         user_id: UUID,
         user_role: str,
         dto: ChatRequestDTO,
-        rag_chunks: List[str] | None = None,
+        rag_chunks: list[str] | None = None,
     ) -> ChatResponseDTO:
         """Execute multi-agent workflow: input sanitization -> intent classification -> agent execution -> output grounding."""
         start_time = time.time()
@@ -50,9 +49,9 @@ class OrchestratorAgent:
         logger.info(f"Processing chat session={session_id} for user={user_id} with prompt='{safe_prompt[:50]}...'")
 
         query_lower = safe_prompt.lower()
-        active_agents: List[str] = ["OrchestratorAgent"]
-        executed_tools: List[ExecutedToolDTO] = []
-        response_fragments: List[str] = []
+        active_agents: list[str] = ["OrchestratorAgent"]
+        executed_tools: list[ExecutedToolDTO] = []
+        response_fragments: list[str] = []
 
         context = {"venue_id": dto.venue_id, "user_id": user_id, "role": user_role}
 
@@ -107,5 +106,5 @@ class OrchestratorAgent:
                 total_tokens=token_count,
                 estimated_cost_usd=round(token_count * 0.0000015, 6),
             ),
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )

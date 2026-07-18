@@ -1,6 +1,6 @@
 import json
-from typing import List, Dict, Any
 from uuid import UUID
+
 from app.infrastructure.redis_client import get_redis
 
 
@@ -17,7 +17,7 @@ class RedisMemory:
         await redis.expire(key, 86400)  # 24 hours TTL
 
     @classmethod
-    async def get_conversation_window(cls, session_id: UUID, max_messages: int = 10) -> List[Dict[str, str]]:
+    async def get_conversation_window(cls, session_id: UUID, max_messages: int = 10) -> list[dict[str, str]]:
         """Retrieve the most recent conversation messages cleanly."""
         redis = await get_redis()
         key = f"memory:session:{session_id}"

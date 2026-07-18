@@ -1,39 +1,41 @@
-from typing import Annotated, AsyncGenerator, Callable
+from collections.abc import Callable
+from typing import Annotated
 from uuid import UUID
-from fastapi import Depends, Header, Request
+
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.application.agents.orchestrator import OrchestratorAgent
+from app.application.agents.sub_agents import EmergencyAgent, NavigationAgent, ParkingAgent
+from app.application.services.assistant_service import AssistantService
+from app.application.services.audit_service import AuditLogService
+from app.application.services.auth_service import AuthService
+from app.application.services.parking_service import ParkingService
+from app.application.services.venue_service import NavigationService, VenueService
 from app.core.exceptions import InsufficientPermissionsException, UnauthorizedException
 from app.core.security.jwt import verify_access_token
 from app.core.security.permissions import has_permission
 from app.domain.entities.user import User
-from app.domain.repositories.user_repo import IUserRepository, IRefreshTokenRepository
-from app.domain.repositories.venue_repo import IVenueRepository, IPOIRepository
 from app.domain.repositories.parking_repo import IParkingLotRepository, IParkingReservationRepository
 from app.domain.repositories.session_repo import (
-    ISessionRepository,
+    IEmergencyRepository,
     IMessageRepository,
     IRAGRepository,
-    IEmergencyRepository,
+    ISessionRepository,
 )
+from app.domain.repositories.user_repo import IRefreshTokenRepository, IUserRepository
+from app.domain.repositories.venue_repo import IPOIRepository, IVenueRepository
 from app.infrastructure.database import get_db
-from app.infrastructure.repositories.sql_user_repo import SQLUserRepository, SQLRefreshTokenRepository
-from app.infrastructure.repositories.sql_venue_repo import SQLVenueRepository, SQLPOIRepository
 from app.infrastructure.repositories.sql_parking_repo import SQLParkingLotRepository, SQLParkingReservationRepository
 from app.infrastructure.repositories.sql_session_repo import (
-    SQLSessionRepository,
+    SQLEmergencyRepository,
     SQLMessageRepository,
     SQLRAGRepository,
-    SQLEmergencyRepository,
+    SQLSessionRepository,
 )
-from app.application.services.audit_service import AuditLogService
-from app.application.services.auth_service import AuthService
-from app.application.services.venue_service import VenueService, NavigationService
-from app.application.services.parking_service import ParkingService
-from app.application.services.assistant_service import AssistantService
-from app.application.agents.sub_agents import NavigationAgent, ParkingAgent, EmergencyAgent
-from app.application.agents.orchestrator import OrchestratorAgent
+from app.infrastructure.repositories.sql_user_repo import SQLRefreshTokenRepository, SQLUserRepository
+from app.infrastructure.repositories.sql_venue_repo import SQLPOIRepository, SQLVenueRepository
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 

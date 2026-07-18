@@ -1,9 +1,9 @@
 import re
-from typing import List
+
 from app.core.exceptions import SecurityGuardException
 
 # Regex patterns catching common prompt injection jailbreaks and instruction overrides
-INJECTION_PATTERNS: List[re.Pattern[str]] = [
+INJECTION_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"ignore\s+(all\s+)?(previous|prior)\s+instructions", re.IGNORECASE),
     re.compile(r"you\s+are\s+now\s+in\s+developer\s+mode", re.IGNORECASE),
     re.compile(r"system\s+prompt\s+override", re.IGNORECASE),

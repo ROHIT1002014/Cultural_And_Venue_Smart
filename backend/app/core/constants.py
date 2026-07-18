@@ -1,8 +1,8 @@
 """Application-wide constants and enumerations."""
-from enum import Enum
+from enum import StrEnum
 
 
-class UserRole(str, Enum):
+class UserRole(StrEnum):
     """User role hierarchy levels."""
     ADMIN = "ADMIN"
     VOLUNTEER = "VOLUNTEER"
@@ -10,7 +10,7 @@ class UserRole(str, Enum):
     GUEST = "GUEST"
 
 
-class POICategory(str, Enum):
+class POICategory(StrEnum):
     """Points of interest classification."""
     RESTROOM = "restroom"
     EXIT = "exit"
@@ -21,14 +21,14 @@ class POICategory(str, Enum):
     ELEVATOR = "elevator"
 
 
-class ParkingStatus(str, Enum):
+class ParkingStatus(StrEnum):
     """Parking lot operational state."""
     OPEN = "OPEN"
     FULL = "FULL"
     MAINTENANCE = "MAINTENANCE"
 
 
-class AlertSeverity(str, Enum):
+class AlertSeverity(StrEnum):
     """Emergency alert severity levels."""
     LOW = "LOW"
     MEDIUM = "MEDIUM"

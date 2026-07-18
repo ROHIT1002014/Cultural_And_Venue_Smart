@@ -1,23 +1,17 @@
 import asyncio
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
+from datetime import UTC
+
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from httpx import ASGITransport, AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
-from app.main import app
-from app.core.config import get_settings
-from app.infrastructure.models.base import Base
-from app.infrastructure.models import (
-    user_model,
-    venue_model,
-    parking_model,
-    session_model,
-    audit_model
-)
 from app.infrastructure.database import get_db
+from app.infrastructure.models.base import Base
 from app.infrastructure.redis_client import get_redis
+from app.main import app
 
 # Use SQLite in-memory async database for ultra-fast unit/integration testing
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -49,17 +43,18 @@ async def setup_test_db() -> AsyncGenerator[None, None]:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
     async with TestingSessionLocal() as session:
-        from app.infrastructure.models.venue_model import VenueORM
+        from datetime import datetime
         from uuid import UUID
-        from datetime import datetime, timezone
+
+        from app.infrastructure.models.venue_model import VenueORM
         default_venue = VenueORM(
             id=UUID("00000000-0000-0000-0000-000000000001"),
             name="Default Venue",
             address="123 Cultural Way",
             total_capacity=10000,
             current_occupancy=0,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
         )
         session.add(default_venue)
         await session.commit()

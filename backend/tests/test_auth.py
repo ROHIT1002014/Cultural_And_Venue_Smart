@@ -1,8 +1,8 @@
 import pytest
 from httpx import AsyncClient
-from tests.conftest import TestingSessionLocal
-from app.infrastructure.models.user_model import UserORM
 from sqlalchemy import select
+
+from app.infrastructure.models.user_model import UserORM
 
 
 @pytest.mark.asyncio

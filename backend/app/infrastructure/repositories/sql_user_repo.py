@@ -1,10 +1,12 @@
-from typing import Sequence
 from uuid import UUID
-from sqlalchemy import select, update as sa_update
+
+from sqlalchemy import select
+from sqlalchemy import update as sa_update
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.domain.entities.user import User, RefreshToken
-from app.domain.repositories.user_repo import IUserRepository, IRefreshTokenRepository
-from app.infrastructure.models.user_model import UserORM, RefreshTokenORM
+
+from app.domain.entities.user import RefreshToken, User
+from app.domain.repositories.user_repo import IRefreshTokenRepository, IUserRepository
+from app.infrastructure.models.user_model import RefreshTokenORM, UserORM
 from app.infrastructure.repositories.generic_repo import SQLAlchemyGenericRepository
 
 

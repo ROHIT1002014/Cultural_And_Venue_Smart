@@ -1,11 +1,12 @@
+from datetime import UTC, datetime
 from typing import Any
-from datetime import datetime, timezone
 from uuid import uuid4
-from app.domain.entities.user import User
-from app.domain.entities.venue import Venue, PointOfInterest
-from app.domain.entities.parking import ParkingLot, ParkingReservation
+
+from app.core.constants import POICategory, UserRole
 from app.core.security.password import hash_password
-from app.core.constants import UserRole, POICategory
+from app.domain.entities.parking import ParkingLot
+from app.domain.entities.user import User
+from app.domain.entities.venue import PointOfInterest, Venue
 
 
 class UserFactory:
@@ -17,7 +18,7 @@ class UserFactory:
         role: UserRole = UserRole.USER,
         is_active: bool = True,
     ) -> User:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return User(
             id=uuid4(),
             email=email.lower(),
@@ -35,7 +36,7 @@ class VenueFactory:
     """Factory generating Venue and PointOfInterest domain entities."""
     @staticmethod
     def build(name: str = "Grand National Cultural Museum", total_capacity: int = 5000) -> Venue:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return Venue(
             id=uuid4(),
             name=name,
@@ -57,7 +58,7 @@ class VenueFactory:
             coordinates={"floor": 1, "section": "West Wing"},
             floor_level=1,
             is_accessible=True,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
 
 
@@ -65,7 +66,7 @@ class ParkingFactory:
     """Factory generating ParkingLot and ParkingReservation domain entities."""
     @staticmethod
     def build_lot(venue_id: Any, lot_name: str = "East Wing Structure", total_spots: int = 200) -> ParkingLot:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return ParkingLot(
             id=uuid4(),
             venue_id=venue_id,

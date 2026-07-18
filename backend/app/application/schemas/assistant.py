@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -16,7 +17,7 @@ class ExecutedToolDTO(BaseModel):
     """DTO reporting an invoked agent tool during conversation processing."""
     agent_name: str
     tool_name: str
-    arguments: Dict[str, Any]
+    arguments: dict[str, Any]
     output_summary: str
 
 
@@ -33,8 +34,8 @@ class ChatResponseDTO(BaseModel):
     session_id: UUID
     message_id: UUID
     response: str
-    active_agents: List[str]
-    executed_tools: List[ExecutedToolDTO]
+    active_agents: list[str]
+    executed_tools: list[ExecutedToolDTO]
     grounding_score: float
     token_usage: TokenUsageDTO
     created_at: datetime
@@ -63,11 +64,11 @@ class FAQItemDTO(BaseModel):
     document_title: str
     content: str
     similarity_score: float
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
 
 
 class FAQSearchResponseDTO(BaseModel):
     """DTO wrapping FAQ search results."""
     venue_id: UUID
     query: str
-    results: List[FAQItemDTO]
+    results: list[FAQItemDTO]

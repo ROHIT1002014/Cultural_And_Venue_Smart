@@ -1,26 +1,28 @@
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.domain.entities.session import (
-    ConversationSession,
     ChatMessage,
-    RAGDocument,
-    RAGChunk,
+    ConversationSession,
     EmergencyAlert,
+    RAGChunk,
+    RAGDocument,
 )
 from app.domain.repositories.session_repo import (
-    ISessionRepository,
+    IEmergencyRepository,
     IMessageRepository,
     IRAGRepository,
-    IEmergencyRepository,
+    ISessionRepository,
 )
 from app.infrastructure.models.session_model import (
-    ConversationSessionORM,
     ChatMessageORM,
-    RAGDocumentORM,
-    RAGChunkORM,
+    ConversationSessionORM,
     EmergencyAlertORM,
+    RAGChunkORM,
+    RAGDocumentORM,
 )
 from app.infrastructure.repositories.generic_repo import SQLAlchemyGenericRepository
 

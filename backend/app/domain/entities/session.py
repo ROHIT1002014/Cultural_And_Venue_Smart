@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 from uuid import UUID
 
 
@@ -21,7 +21,7 @@ class ChatMessage:
     session_id: UUID
     role: str  # "user", "assistant", "system", "tool"
     content: str
-    tool_calls: List[Dict[str, Any]] | None
+    tool_calls: list[dict[str, Any]] | None
     latency_seconds: float
     token_count: int
     created_at: datetime
@@ -44,8 +44,8 @@ class RAGChunk:
     id: UUID
     document_id: UUID
     content: str
-    embedding: List[float] | None
-    metadata: Dict[str, Any]
+    embedding: list[float] | None
+    metadata: dict[str, Any]
 
 
 @dataclass
@@ -56,6 +56,6 @@ class EmergencyAlert:
     user_id: UUID
     alert_type: str
     severity: str
-    location: Dict[str, Any]
+    location: dict[str, Any]
     status: str
     created_at: datetime

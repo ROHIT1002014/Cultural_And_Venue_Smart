@@ -1,5 +1,6 @@
-import pytest
 from uuid import uuid4
+
+import pytest
 from httpx import AsyncClient
 
 
@@ -175,7 +176,7 @@ async def test_list_venue_lots_status(client: AsyncClient) -> None:
     venue_resp = await client.post("/api/v1/venues", json={"name": "Status Hall", "address": "202 Status Street Avenue"}, headers=headers)
     venue_id = venue_resp.json()["id"]
 
-    lot_open = await client.post("/api/v1/parking/lots", json={"venue_id": venue_id, "lot_name": "Open Lot", "total_spots": 5, "accessible_spots_total": 1, "has_ev_charging": True}, headers=headers)
+    await client.post("/api/v1/parking/lots", json={"venue_id": venue_id, "lot_name": "Open Lot", "total_spots": 5, "accessible_spots_total": 1, "has_ev_charging": True}, headers=headers)
     lot_full = await client.post("/api/v1/parking/lots", json={"venue_id": venue_id, "lot_name": "Full Lot", "total_spots": 1, "accessible_spots_total": 0, "has_ev_charging": False}, headers=headers)
 
     # Fill the second lot

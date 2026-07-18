@@ -1,21 +1,24 @@
-from typing import Annotated, Sequence
+from collections.abc import Sequence
+from typing import Annotated
 from uuid import UUID
+
 from fastapi import APIRouter, Depends
-from app.core.security.permissions import PERMISSION_VENUE_CREATE, PERMISSION_EMERGENCY_TRIGGER
-from app.domain.entities.user import User
+
 from app.application.schemas.venue import (
-    VenueCreateDTO,
-    VenueResponseDTO,
+    AlertResponseDTO,
+    AlertTriggerDTO,
+    CrowdDensityDTO,
     POICreateDTO,
     POIResponseDTO,
     RouteRequestDTO,
     RouteResponseDTO,
-    CrowdDensityDTO,
-    AlertTriggerDTO,
-    AlertResponseDTO,
+    VenueCreateDTO,
+    VenueResponseDTO,
 )
-from app.application.services.venue_service import VenueService, NavigationService
-from app.presentation.deps import get_venue_service, get_nav_service, require_permission
+from app.application.services.venue_service import NavigationService, VenueService
+from app.core.security.permissions import PERMISSION_EMERGENCY_TRIGGER, PERMISSION_VENUE_CREATE
+from app.domain.entities.user import User
+from app.presentation.deps import get_nav_service, get_venue_service, require_permission
 
 router = APIRouter(prefix="/venues", tags=["Venues & Navigation"])
 

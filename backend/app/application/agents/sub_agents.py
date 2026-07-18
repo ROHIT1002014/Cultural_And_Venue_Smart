@@ -1,15 +1,16 @@
-from typing import Any, Dict, List
+from typing import Any
 from uuid import UUID
+
 from app.application.schemas.assistant import ExecutedToolDTO
-from app.application.services.venue_service import VenueService, NavigationService
 from app.application.services.parking_service import ParkingService
+from app.application.services.venue_service import NavigationService, VenueService
 
 
 class BaseSubAgent:
     """Abstract base for specialized domain agents."""
     agent_name: str = "BaseSubAgent"
 
-    async def execute(self, query: str, context: Dict[str, Any]) -> tuple[str, List[ExecutedToolDTO]]:
+    async def execute(self, query: str, context: dict[str, Any]) -> tuple[str, list[ExecutedToolDTO]]:
         """Process query and return domain response alongside executed tool summary."""
         raise NotImplementedError
 
@@ -22,9 +23,9 @@ class NavigationAgent(BaseSubAgent):
         self.venue_service = venue_service
         self.nav_service = nav_service
 
-    async def execute(self, query: str, context: Dict[str, Any]) -> tuple[str, List[ExecutedToolDTO]]:
+    async def execute(self, query: str, context: dict[str, Any]) -> tuple[str, list[ExecutedToolDTO]]:
         venue_id: UUID = context.get("venue_id") or UUID("00000000-0000-0000-0000-000000000001")
-        executed: List[ExecutedToolDTO] = []
+        executed: list[ExecutedToolDTO] = []
 
         query_lower = query.lower()
         if "restroom" in query_lower or "toilet" in query_lower or "bathroom" in query_lower:
@@ -51,7 +52,7 @@ class ParkingAgent(BaseSubAgent):
     def __init__(self, parking_service: ParkingService):
         self.parking_service = parking_service
 
-    async def execute(self, query: str, context: Dict[str, Any]) -> tuple[str, List[ExecutedToolDTO]]:
+    async def execute(self, query: str, context: dict[str, Any]) -> tuple[str, list[ExecutedToolDTO]]:
         venue_id: UUID = context.get("venue_id") or UUID("00000000-0000-0000-0000-000000000001")
         lots = await self.parking_service.list_venue_lots(venue_id=venue_id)
 
@@ -73,7 +74,7 @@ class EmergencyAgent(BaseSubAgent):
     """Sub-agent handling priority emergency alerts and evacuation guidance."""
     agent_name = "EmergencyAgent"
 
-    async def execute(self, query: str, context: Dict[str, Any]) -> tuple[str, List[ExecutedToolDTO]]:
+    async def execute(self, query: str, context: dict[str, Any]) -> tuple[str, list[ExecutedToolDTO]]:
         executed = [
             ExecutedToolDTO(
                 agent_name=self.agent_name,

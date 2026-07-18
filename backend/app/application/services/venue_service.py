@@ -1,23 +1,24 @@
-from datetime import datetime, timezone
-from typing import Sequence
+from collections.abc import Sequence
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
-from app.core.exceptions import EntityNotFoundException, ValidationDomainException
-from app.domain.entities.venue import Venue, PointOfInterest
-from app.domain.entities.session import EmergencyAlert
-from app.domain.repositories.venue_repo import IVenueRepository, IPOIRepository
-from app.domain.repositories.session_repo import IEmergencyRepository
+
 from app.application.schemas.venue import (
-    VenueCreateDTO,
-    VenueResponseDTO,
+    AlertResponseDTO,
+    AlertTriggerDTO,
+    CrowdDensityDTO,
     POICreateDTO,
     POIResponseDTO,
     RouteRequestDTO,
     RouteResponseDTO,
-    CrowdDensityDTO,
-    AlertTriggerDTO,
-    AlertResponseDTO,
+    VenueCreateDTO,
+    VenueResponseDTO,
 )
 from app.application.services.audit_service import AuditLogService
+from app.core.exceptions import EntityNotFoundException, ValidationDomainException
+from app.domain.entities.session import EmergencyAlert
+from app.domain.entities.venue import PointOfInterest, Venue
+from app.domain.repositories.session_repo import IEmergencyRepository
+from app.domain.repositories.venue_repo import IPOIRepository, IVenueRepository
 
 
 class VenueService:
@@ -41,7 +42,7 @@ class VenueService:
         if existing:
             raise ValidationDomainException(f"Venue with name '{dto.name}' already exists.")
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         venue = Venue(
             id=uuid4(),
             name=dto.name,
@@ -93,7 +94,7 @@ class VenueService:
             coordinates=dto.coordinates,
             floor_level=dto.floor_level,
             is_accessible=dto.is_accessible,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
         saved = await self.poi_repo.create(poi)
         await self.audit_service.log_event(
@@ -143,7 +144,7 @@ class VenueService:
             severity=dto.severity.value,
             location=dto.location,
             status="ACTIVE",
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )
         saved = await self.emergency_repo.create(alert)
 
