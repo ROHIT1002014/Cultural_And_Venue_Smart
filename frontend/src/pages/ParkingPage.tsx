@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Car, CheckCircle, Zap, Accessibility, ShieldCheck } from "lucide-react";
+import { Car, CheckCircle, Zap, Accessibility } from "lucide-react";
 import { ParkingLot } from "@/types/parking";
 import { parkingService } from "@/services/parkingService";
 import { Toast } from "@/components/common/Toast";
@@ -127,6 +127,7 @@ export const ParkingPage: React.FC<{ venueId: string }> = ({ venueId }) => {
                 type="text"
                 required
                 value={license}
+                aria-label="Vehicle License Plate"
                 onChange={(e) => setLicense(e.target.value)}
                 placeholder="e.g. EV-CULTURE-1"
                 className="w-full bg-dark-bg border border-dark-border rounded-xl px-4 py-2.5 text-xs text-gray-100 uppercase focus:outline-none focus:border-brand-500"

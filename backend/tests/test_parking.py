@@ -187,6 +187,6 @@ async def test_list_venue_lots_status(client: AsyncClient) -> None:
     lots = lots_resp.json()
     assert len(lots) == 2
 
-    status_map = {l["lot_name"]: l["status"] for l in lots}
+    status_map = {lot["lot_name"]: lot["status"] for lot in lots}
     assert status_map["Open Lot"] == "OPEN"
     assert status_map["Full Lot"] == "FULL"

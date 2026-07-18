@@ -29,6 +29,8 @@ export const Sidebar: React.FC<{ activeTab: string; onSelectTab: (tab: string) =
         return (
           <button
             key={item.id}
+            type="button"
+            aria-label={item.label}
             onClick={() => onSelectTab(item.id)}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 text-sm ${
               isActive
@@ -38,7 +40,7 @@ export const Sidebar: React.FC<{ activeTab: string; onSelectTab: (tab: string) =
           >
             <span className={isActive ? "text-brand-400" : "text-gray-500"}>{item.icon}</span>
             {item.label}
-          </aside>
+          </button>
         );
       })}
     </aside>

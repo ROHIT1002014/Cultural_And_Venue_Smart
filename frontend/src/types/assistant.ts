@@ -2,7 +2,7 @@ export interface ExecutedTool {
   agent_name: string;
   tool_name: string;
   arguments: Record<string, any>;
-  output_summary: str | string;
+  output_summary: string;
 }
 
 export interface TokenUsage {

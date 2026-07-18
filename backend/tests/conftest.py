@@ -36,7 +36,7 @@ async def setup_test_db() -> AsyncGenerator[None, None]:
     from app.core.security.rate_limiter import limiter
     try:
         limiter._storage.reset()
-    except Exception:
+    except Exception:  # noqa: S110
         pass
 
     async with test_engine.begin() as conn:
@@ -61,7 +61,7 @@ async def setup_test_db() -> AsyncGenerator[None, None]:
     try:
         redis = await get_redis()
         await redis.flushdb()
-    except Exception:
+    except Exception:  # noqa: S110
         pass
     yield
     async with test_engine.begin() as conn:
@@ -69,7 +69,7 @@ async def setup_test_db() -> AsyncGenerator[None, None]:
     try:
         redis = await get_redis()
         await redis.flushdb()
-    except Exception:
+    except Exception:  # noqa: S110
         pass
 
 

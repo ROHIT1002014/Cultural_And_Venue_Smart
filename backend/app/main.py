@@ -56,7 +56,7 @@ def create_app() -> FastAPI:
 
     # Attach Rate Limiter state
     app.state.limiter = limiter
-    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
     # Setup Custom Exception Handlers
     setup_exception_handlers(app)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ShieldAlert, Users, Car, Bell, AlertTriangle, CheckCircle2, Activity, RefreshCw } from "lucide-react";
+import { ShieldAlert, Users, Car, Bell, AlertTriangle, RefreshCw } from "lucide-react";
 import { CrowdDensity } from "@/types/venue";
 import { ParkingLot } from "@/types/parking";
 import { venueService } from "@/services/venueService";
@@ -39,6 +39,7 @@ export const AdminDashboard: React.FC<{ venueId: string }> = ({ venueId }) => {
 
   useEffect(() => {
     fetchAdminData();
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [venueId]);
 
   const handleTriggerAlert = async () => {

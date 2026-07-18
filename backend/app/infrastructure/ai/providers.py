@@ -17,7 +17,7 @@ class ILLMProvider(ABC):
         pass
 
     @abstractmethod
-    async def stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
+    def stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
         """Yield streaming text chunks."""
         pass
 
@@ -68,7 +68,10 @@ class FallbackProvider(ILLMProvider):
             logger.warning(f"Primary AI provider failed ({exc}), falling back to secondary provider...")
             return await self.backup.generate_completion(prompt, system_prompt, tools)
 
-    async def stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
+    def stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
+        return self._stream_completion(prompt, system_prompt)
+
+    async def _stream_completion(self, prompt: str, system_prompt: str) -> AsyncGenerator[str, None]:
         try:
             async for chunk in self.primary.stream_completion(prompt, system_prompt):
                 yield chunk

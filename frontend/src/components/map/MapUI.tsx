@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigation, Layers, CheckCircle, Accessibility, AlertCircle, Compass } from "lucide-react";
+import { Navigation, CheckCircle, Accessibility, Compass } from "lucide-react";
 import { POI, RouteResponse } from "@/types/venue";
 import { venueService } from "@/services/venueService";
 

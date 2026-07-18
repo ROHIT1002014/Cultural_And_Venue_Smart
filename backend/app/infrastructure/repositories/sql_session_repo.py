@@ -56,7 +56,7 @@ class SQLSessionRepository(SQLAlchemyGenericRepository[ConversationSession, Conv
     async def get_by_user_id(self, user_id: UUID) -> Sequence[ConversationSession]:
         stmt = select(ConversationSessionORM).where(ConversationSessionORM.user_id == user_id).order_by(ConversationSessionORM.last_active_at.desc())
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]
 
 
 class SQLMessageRepository(SQLAlchemyGenericRepository[ChatMessage, ChatMessageORM], IMessageRepository):
@@ -94,7 +94,7 @@ class SQLMessageRepository(SQLAlchemyGenericRepository[ChatMessage, ChatMessageO
     async def get_recent_messages(self, session_id: UUID, limit: int = 20) -> Sequence[ChatMessage]:
         stmt = select(ChatMessageORM).where(ChatMessageORM.session_id == session_id).order_by(ChatMessageORM.created_at.asc()).limit(limit)
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]
 
 
 class SQLRAGRepository(SQLAlchemyGenericRepository[RAGDocument, RAGDocumentORM], IRAGRepository):
@@ -177,4 +177,4 @@ class SQLEmergencyRepository(SQLAlchemyGenericRepository[EmergencyAlert, Emergen
     async def get_active_alerts(self, venue_id: UUID) -> Sequence[EmergencyAlert]:
         stmt = select(EmergencyAlertORM).where(EmergencyAlertORM.venue_id == venue_id, EmergencyAlertORM.status == "ACTIVE")
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]

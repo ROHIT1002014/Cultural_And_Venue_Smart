@@ -49,7 +49,7 @@ class SQLParkingLotRepository(SQLAlchemyGenericRepository[ParkingLot, ParkingLot
     async def get_by_venue_id(self, venue_id: UUID) -> Sequence[ParkingLot]:
         stmt = select(ParkingLotORM).where(ParkingLotORM.venue_id == venue_id)
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]
 
 
 class SQLParkingReservationRepository(
@@ -91,4 +91,4 @@ class SQLParkingReservationRepository(
             ParkingReservationORM.user_id == user_id, ParkingReservationORM.status == "ACTIVE"
         )
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Mic, ShieldCheck, Sparkles, AlertTriangle, Cpu, Terminal, RefreshCw } from "lucide-react";
+import { Send, Mic, ShieldCheck, Sparkles, Cpu, Terminal, RefreshCw } from "lucide-react";
 import { ChatMessage } from "@/types/assistant";
 import { assistantService } from "@/services/assistantService";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
@@ -23,7 +23,9 @@ export const ChatUI: React.FC<{ venueId?: string }> = ({ venueId }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (typeof messagesEndRef.current?.scrollIntoView === "function") {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -204,6 +206,7 @@ export const ChatUI: React.FC<{ venueId?: string }> = ({ venueId }) => {
         <input
           type="text"
           value={input}
+          aria-label="Chat input"
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask for accessible routes, restroom locations, or EV parking status..."
           className="flex-1 bg-dark-surface border border-dark-border/80 rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500/80 focus:ring-1 focus:ring-brand-500 transition-all"

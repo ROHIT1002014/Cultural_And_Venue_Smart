@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, Navigation, ShieldCheck, Cpu, ArrowRight, Layers, Car, Globe, Heart } from "lucide-react";
+import { Sparkles, Navigation, ShieldCheck, Cpu, ArrowRight } from "lucide-react";
 
 export const Home: React.FC<{ onNavigate: (path: string) => void }> = ({ onNavigate }) => {
   return (

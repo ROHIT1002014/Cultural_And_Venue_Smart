@@ -89,4 +89,4 @@ class SQLPOIRepository(SQLAlchemyGenericRepository[PointOfInterest, PointOfInter
         if accessible_only:
             stmt = stmt.where(PointOfInterestORM.is_accessible == True)  # noqa: E712
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]

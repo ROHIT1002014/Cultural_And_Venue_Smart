@@ -14,7 +14,7 @@ class UserFactory:
     @staticmethod
     def build(
         email: str = "testuser@example.com",
-        password: str = "StrongPassword123!",
+        password: str = "StrongPassword123!",  # noqa: S107
         role: UserRole = UserRole.USER,
         is_active: bool = True,
     ) -> User:

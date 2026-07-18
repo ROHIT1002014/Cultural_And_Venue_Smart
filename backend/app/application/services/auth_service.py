@@ -150,7 +150,7 @@ class AuthService:
         return TokenResponseDTO(
             access_token=access_token,
             refresh_token=raw_refresh,
-            token_type="bearer",
+            token_type="bearer",  # noqa: S106
             expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
             user=UserResponseDTO.model_validate(user),
         )

@@ -28,7 +28,9 @@ class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[Dom
         raise NotImplementedError
 
     async def get_by_id(self, entity_id: UUID) -> DomainEntityT | None:
-        result = await self.session.execute(select(self.model_class).where(self.model_class.id == entity_id))
+        result = await self.session.execute(
+            select(self.model_class).where(self.model_class.id == entity_id)  # type: ignore[attr-defined]
+        )
         orm_obj = result.scalar_one_or_none()
         return self._to_domain(orm_obj) if orm_obj else None
 
@@ -39,7 +41,7 @@ class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[Dom
                 stmt = stmt.where(getattr(self.model_class, key) == value)
         stmt = stmt.offset(skip).limit(limit)
         result = await self.session.execute(stmt)
-        return [self._to_domain(row) for row in result.scalars().all() if self._to_domain(row) is not None]
+        return [entity for row in result.scalars().all() if (entity := self._to_domain(row)) is not None]
 
     async def create(self, entity: DomainEntityT) -> DomainEntityT:
         orm_obj = self._to_orm(entity)
@@ -60,10 +62,10 @@ class SQLAlchemyGenericRepository(IGenericRepository[DomainEntityT], Generic[Dom
         return domain
 
     async def delete(self, entity_id: UUID) -> bool:
-        stmt = sa_delete(self.model_class).where(self.model_class.id == entity_id)
+        stmt = sa_delete(self.model_class).where(self.model_class.id == entity_id)  # type: ignore[attr-defined]
         result = await self.session.execute(stmt)
         await self.session.commit()
-        return result.rowcount > 0
+        return getattr(result, "rowcount", 0) > 0
 
     async def count(self, **filters: Any) -> int:
         stmt = select(func.count()).select_from(self.model_class)

@@ -1,7 +1,7 @@
 from typing import Any
 
 
-class DomainException(Exception):
+class DomainException(Exception):  # noqa: N818
     """Base class for all core domain logic exceptions."""
     def __init__(self, message: str, code: str = "DOMAIN_ERROR", status_code: int = 400, details: Any | None = None):
         super().__init__(message)
